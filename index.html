@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Happy Birthday Animation</title>
+    <style>
+        body {
+            background: #2c003e;
+            margin: 0;
+            overflow: hidden;
+            font-family: 'Comic Sans MS', cursive;
+        }
+
+        .container {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        h1 {
+            color: #ff9f43;
+            font-size: 4em;
+            text-shadow: 2px 2px #ff6b6b;
+            animation: bounce 2s infinite;
+            z-index: 2;
+        }
+
+        .cake-container {
+            position: relative;
+            margin: 30px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .cake {
+            width: 200px;
+            height: 100px;
+            background: #e67e22;
+            border-radius: 10px 10px 0 0;
+            position: relative;
+        }
+
+        .cake:after {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            left: 0;
+            width: 200px;
+            height: 20px;
+            background: #fdcb6e;
+            border-radius: 0 0 10px 10px;
+        }
+
+        .candle {
+            width: 12px;
+            height: 50px;
+            background: #fff;
+            position: absolute;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: flicker 0.1s infinite;
+        }
+
+        .flame {
+            width: 15px;
+            height: 25px;
+            background: #ffd700;
+            border-radius: 50%;
+            position: absolute;
+            bottom: 150px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: flame 0.3s infinite;
+        }
+
+        .particle {
+            position: absolute;
+            pointer-events: none;
+            background: #ff9f43;
+            border-radius: 50%;
+            animation: particle-float 3s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes flicker {
+            0%, 100% { opacity: 0.9; transform: rotate(2deg); }
+            50% { opacity: 1; transform: rotate(-2deg); }
+        }
+
+        @keyframes flame {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.1); opacity: 1; }
+        }
+
+        @keyframes particle-float {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+
+        .stars {
+            position: fixed;
+            width: 3px;
+            height: 3px;
+            background: white;
+            animation: twinkle 2s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎂 Happy Birthday! 🎉</h1>
+        <div class="cake-container">
+            <div class="cake"></div>
+            <div class="candle"></div>
+            <div class="flame"></div>
+        </div>
+    </div>
+
+    <script>
+        // Create cake particles
+        function createParticles() {
+            const particles = 50;
+            const container = document.querySelector('.container');
+            
+            for (let i = 0; i < particles; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + 'vw';
+                particle.style.width = particle.style.height = 
+                    Math.random() * 10 + 5 + 'px';
+                particle.style.animationDelay = Math.random() * 2 + 's';
+                particle.style.backgroundColor = 
+                    `hsl(${Math.random() * 360}, 70%, 60%)`;
+                container.appendChild(particle);
+            }
+        }
+
+        // Create background stars
+        function createStars() {
+            const stars = 100;
+            for (let i = 0; i < stars; i++) {
+                const star = document.createElement('div');
+                star.className = 'stars';
+                star.style.left = Math.random() * 100 + 'vw';
+                star.style.top = Math.random() * 100 + 'vh';
+                star.style.animationDelay = Math.random() * 2 + 's';
+                document.body.appendChild(star);
+            }
+        }
+
+        // Add interactive click effect
+        document.addEventListener('click', (e) => {
+            for (let i = 0; i < 5; i++) {
+                const spark = document.createElement('div');
+                spark.className = 'particle';
+                spark.style.left = e.clientX + 'px';
+                spark.style.top = e.clientY + 'px';
+                spark.style.animation = 'particle-float 1s forwards';
+                document.body.appendChild(spark);
+                
+                setTimeout(() => spark.remove(), 1000);
+            }
+        });
+
+        // Initialize effects
+        createStars();
+        createParticles();
+
+        // Add music (uncomment to use)
+        // const audio = new Audio('https://assets.mixkit.co/active_storage/sfx/2859/2859-preview.mp3');
+        // audio.loop = true;
+        // audio.play();
+    </script>
+</body>
+</html>
